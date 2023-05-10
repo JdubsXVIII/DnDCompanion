@@ -19,6 +19,7 @@ public class Character {
     private HashMap<String, Boolean> savingThrows; // the character's saving throw proficiencies
     private ArrayList<String> spells; // the character's spells
     private HashMap<Object, String> features; // the character's features, as determined by their previous choices, and their descriptions.
+    private ArrayList<Expendable> expFeatures; // the character's expendable features.
 
     /**
      * Creates a new Character object.
@@ -30,6 +31,7 @@ public class Character {
         savingThrows = new HashMap<>();
         spells = new ArrayList<>();
         features = new HashMap<>();
+        expFeatures = new ArrayList<>();
     }
 
     /**
@@ -107,7 +109,56 @@ public class Character {
      * Sets the class of the character.
      * @param c The desired class.
      */
-    public void setClass(String c){}
+    public void setClass(String c){
+        Scanner console = new Scanner(System.in);
+        if(c.equals("Barbarian")){
+
+        } else if(c.equals("Bard")){
+
+        } else if(c.equals("Cleric")){
+
+        } else if(c.equals("Druid")){
+
+        } else if(c.equals("Fighter")){
+            playerClass = c;
+            maxHP = 10 + statMods.get("Constitution");
+            hitDie = 10;
+            hitDiceNum = 1;
+            ac = 16;
+            expFeatures.add(new Expendable("Second Wind", 1, true, "Restore 1d10 HP."));
+            System.out.println("Please type in one of the following fighting styles:");
+            System.out.println("- Archery\n- Defense\n- Dueling\n- Great Weapon Fighting\n- Protection\n- Two-Weapon Fighting");
+            String input = console.next();
+            if(input.equals("Archery")){
+                features.put("Archery", "You gain a +2 bonus to attack rolls you make with ranged weapons.");
+            } else if (input.equals("Defense")){
+                features.put("Defense", "While you are wearing armor, gain a +1 bonus to AC.");
+                ac++;
+            } else if (input.equals("Dueling")){
+                features.put("Dueling", "When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.");
+            } else if (input.equals("Great Weapon Fighting")){
+                features.put("Great Weapon Fighting", "When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll, even if the new roll is a 1 or a 2. The weapon must have the two-handed or versatile property for you to gain this benefit.");
+            } else if (input.equals("Protection")){
+                features.put("Protection","When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.");
+            } else {
+                features.put("Two-Weapon Fighting","When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.");
+            }
+        } else if(c.equals("Monk")){
+
+        } else if(c.equals("Paladin")){
+
+        } else if(c.equals("Ranger")){
+
+        } else if(c.equals("Rogue")){
+
+        } else if(c.equals("Sorcerer")){
+
+        } else if(c.equals("Warlock")){
+
+        } else { // the only remaining class is Wizard.
+
+        }
+    }
 
     /**
      * Sets the background of the character.
