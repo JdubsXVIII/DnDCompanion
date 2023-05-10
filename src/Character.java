@@ -38,10 +38,6 @@ public class Character {
      * Sets the stats of the character.
      * @param statList The order the player assigns values to their stats, from highest to lowest.
      */
-    /**
-     * Sets the stats of the character.
-     * @param statList The order the player assigns values to their stats, from highest to lowest.
-     */
     public void setStats(ArrayList<String> statList) {
         int[] statValues = new int[6];
 
@@ -98,6 +94,7 @@ public class Character {
             features.put("Fey Ancestry", "You have advantage on saving throws against being charmed, and magic can't put you to sleep.");
             features.put("Trance", "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.");
         }
+        expFeatures.add("");
 
         // Add additional race-specific features here
         //if needed/ wanted
@@ -257,17 +254,53 @@ public class Character {
 
         // Add spells based on class and level
         if (playerClass.equals("Wizard")) {
-            if (level >= 1) {
-                availableSpells.add("Burning Hands");
-                availableSpells.add("Charm Person");
-                // Add more level 1 spells
-            }
-            if (level >= 2) {
-                availableSpells.add("Detect Thoughts");
-                availableSpells.add("Mirror Image");
-                // Add more level 2 spells
-            }
-            // Add spells for higher levels
+            availableSpells.add("Acid Splash");
+            availableSpells.add("Blade Ward");
+            availableSpells.add("Chill touch");
+            availableSpells.add("Dancing Lights");
+            availableSpells.add("Fire Bolt");
+            availableSpells.add("Friends");
+            availableSpells.add("Light");
+            availableSpells.add("Mage Hand");
+            availableSpells.add("Mending");
+            availableSpells.add("Message");
+            availableSpells.add("Minor Illusion");
+            availableSpells.add("Poison Spray");
+            availableSpells.add("Prestidigitation");
+            availableSpells.add("Ray of Frost");
+            availableSpells.add("Shocking Grasp");
+            availableSpells.add("True Strike");
+            availableSpells.add("Alarm");
+            availableSpells.add("Burning Hands");
+            availableSpells.add("Charm Person");
+            availableSpells.add("Chromatic Orb");
+            availableSpells.add("Color Spray");
+            availableSpells.add("Comprehend Languages");
+            availableSpells.add("Detected Magic");
+            availableSpells.add("Disguise Self");
+            availableSpells.add("Expeditious Retreat");
+            availableSpells.add("False Life");
+            availableSpells.add("Feather Fall");
+            availableSpells.add("Find Familiar");
+            availableSpells.add("Fog Cloud");
+            availableSpells.add("Grease");
+            availableSpells.add("Identify");
+            availableSpells.add("Illusory Script");
+            availableSpells.add("Jump");
+            availableSpells.add("Longstrider");
+            availableSpells.add("Mage Armor");
+            availableSpells.add("Magic Missile");
+            availableSpells.add("Protection from Evil and Good");
+            availableSpells.add("Ray of Sickness");
+            availableSpells.add("Shield");
+            availableSpells.add("Silent Image");
+            availableSpells.add("Sleep");
+            availableSpells.add("Sleep");
+            availableSpells.add("Tasha's Floating Disk");
+            availableSpells.add("Thunderwave");
+            availableSpells.add("Unseen Servant");
+            availableSpells.add("Witch Bolt");
+
         }
 
         // Prompt the user to choose spells
@@ -298,10 +331,6 @@ public class Character {
      * Modifies the character's HP.
      * @param hpChange The number added or subtracted from the character's HP.
      */
-    /**
-     * Modifies the character's HP.
-     * @param hpChange The number added or subtracted from the character's HP.
-     */
     public void modifyHP(int hpChange) {
         currentHP += hpChange;
 
@@ -318,7 +347,7 @@ public class Character {
      */
     public void shortRest() {
         // Restore hit dice
-        int diceToRestore = Math.min(hitDiceNum - usedHitDice, level);
+        int diceToRestore = Math.min(hitDiceNum - usedHitDice);
         currentHP += diceToRestore * (int) (Math.random() * hitDie) + 1;
         usedHitDice += diceToRestore;
 
@@ -329,7 +358,6 @@ public class Character {
         System.out.println("Current HP: " + currentHP + "/" + maxHP);
         System.out.println("Remaining Hit Dice: " + (hitDiceNum - usedHitDice) + "/" + hitDiceNum);
     }
-
     /**
      * Applies the effects of a long rest to the character.
      */
