@@ -23,20 +23,86 @@ public class Character {
     /**
      * Creates a new Character object.
      */
-    public Character(){}
+    public Character() {
+        stats = new HashMap<>();
+        statMods = new HashMap<>();
+        skills = new ArrayList<>();
+        savingThrows = new HashMap<>();
+        spells = new ArrayList<>();
+        features = new HashMap<>();
+    }
 
     /**
      * Sets the stats of the character.
      * @param statList The order the player assigns values to their stats, from highest to lowest.
      */
-    public void setStats(ArrayList<String> statList){}
+    /**
+     * Sets the stats of the character.
+     * @param statList The order the player assigns values to their stats, from highest to lowest.
+     */
+    public void setStats(ArrayList<String> statList) {
+        int[] statValues = new int[6];
+
+        // Prompt the user to enter stat values
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < statList.size(); i++) {
+            String statName = statList.get(i);
+            System.out.print("Enter value for " + statName + ": ");
+            int value = scanner.nextInt();
+            statValues[i] = value;
+        }
+
+        // Set the stats and calculate stat modifiers
+        stats.put("Strength", statValues[0]);
+        stats.put("Dexterity", statValues[1]);
+        stats.put("Constitution", statValues[2]);
+        stats.put("Intelligence", statValues[3]);
+        stats.put("Wisdom", statValues[4]);
+        stats.put("Charisma", statValues[5]);
+
+        calculateStatModifiers();
+
+        // Prompt the user to confirm stat values
+        System.out.println("Stats set to: " + stats);
+    }
+
+    /**
+     * Calculates the stat modifiers based on the current stat values.
+     */
+    private void calculateStatModifiers() {
+        for (String stat : stats.keySet()) {
+            int value = stats.get(stat);
+            int modifier = (value - 10) / 2;
+            statMods.put(stat, modifier);
+        }
+    }
 
     /**
      * Sets the race of the character.
      * @param r The desired race.
      */
-    public void setRace(String r){}
+    public void setRace(String r) {
+        race = r;
 
+        // Autofill features based on race
+        if (race.equals("Dwarf")) {
+            // Autofill features for Dwarf race
+            features.put("Darkvision", "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.");
+            features.put("Dwarven Resilience", "You have advantage on saving throws against poison, and you have resistance against poison damage.");
+            features.put("Stonecunning", "Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check.");
+        } else if (race.equals("Elf")) {
+            // Autofill features for Elf race
+            features.put("Darkvision", "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.");
+            features.put("Fey Ancestry", "You have advantage on saving throws against being charmed, and magic can't put you to sleep.");
+            features.put("Trance", "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.");
+        }
+
+        // Add additional race-specific features here
+        //if needed/ wanted
+
+        // Prompt the user to confirm race choice
+        System.out.println("Race set to: " + race);
+    }
     /**
      * Sets the class of the character.
      * @param c The desired class.
