@@ -113,39 +113,215 @@ public class Character {
      * Sets the background of the character.
      * @param bg The desired background.
      */
-    public void setBackground(String bg){}
+    public void setBackground(String bg) {
+        background = bg;
+
+        // Autofill features based on background
+        if (background.equals("Acolyte")) {
+            // Autofill features for Acolyte background
+            features.put("Shelter of the Faithful", "As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.");
+            features.put("Languages", "You can speak, read, and write two additional languages of your choice.");
+        } else if (background.equals("Criminal")) {
+            // Autofill features for Criminal background
+            features.put("Criminal Contact", "You have a reliable and trustworthy contact who acts as your liaison to a network of other criminals. You know how to get messages to and from your contact, even over great distances; specifically, you know the local messengers, corrupt caravan masters, and seedy sailors who can deliver messages for you.");
+            features.put("Tool Proficiencies", "One type of gaming set, thieves' tools");
+        }
+
+        // Add additional background-specific features here
+
+        // Prompt the user to confirm background choice
+        System.out.println("Background set to: " + background);
+    }
 
     /**
      * Sets the skills of the character.
      */
-    public void setSkills(){}
+    public void setSkills() {
+        // List of available skills based on class and background
+        ArrayList<String> availableSkills = new ArrayList<>();
+
+        // Add skills based on class
+        if (playerClass.equals("Rogue")) {
+            availableSkills.add("Acrobatics");
+            availableSkills.add("Athletics");
+            availableSkills.add("Deception");
+            availableSkills.add("Insight");
+            availableSkills.add("Intimidation");
+            availableSkills.add("Investigation");
+            availableSkills.add("Perception");
+            availableSkills.add("Performance");
+            availableSkills.add("Persuasion");
+            availableSkills.add("Sleight of Hand");
+            availableSkills.add("Stealth");
+        } else if (playerClass.equals("Wizard")) {
+            availableSkills.add("Arcana");
+            availableSkills.add("History");
+            availableSkills.add("Insight");
+            availableSkills.add("Investigation");
+            availableSkills.add("Medicine");
+            availableSkills.add("Perception");
+            availableSkills.add("Religion");
+            availableSkills.add("Survival");
+        }
+
+        // Add skills based on background
+        if (background.equals("Acolyte")) {
+            availableSkills.add("Insight");
+            availableSkills.add("Religion");
+        } else if (background.equals("Criminal")) {
+            availableSkills.add("Deception");
+            availableSkills.add("Stealth");
+        }
+
+        // Prompt the user to choose skills
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose " + playerClass + " skills from the following list:");
+        for (int i = 0; i < availableSkills.size(); i++) {
+            System.out.println((i + 1) + ". " + availableSkills.get(i));
+        }
+        System.out.print("Enter the numbers of the chosen skills (comma-separated): ");
+        String input = scanner.nextLine();
+        String[] skillNumbers = input.split(",");
+
+        // Add chosen skills to the character's skill list
+        for (String number : skillNumbers) {
+            int index = Integer.parseInt(number.trim()) - 1;
+            if (index >= 0 && index < availableSkills.size()) {
+                String chosenSkill = availableSkills.get(index);
+                skills.add(chosenSkill);
+            }
+        }
+
+        // Prompt the user to confirm chosen skills
+        System.out.println("Chosen skills: " + skills);
+    }
+
 
     /**
      * Sets the spells of the character.
      */
-    public void setSpells(){}
+    public void setSpells() {
+        // List of available spells based on class and level
+        ArrayList<String> availableSpells = new ArrayList<>();
+
+        // Add spells based on class and level
+        if (playerClass.equals("Wizard")) {
+            if (level >= 1) {
+                availableSpells.add("Burning Hands");
+                availableSpells.add("Charm Person");
+                // Add more level 1 spells
+            }
+            if (level >= 2) {
+                availableSpells.add("Detect Thoughts");
+                availableSpells.add("Mirror Image");
+                // Add more level 2 spells
+            }
+            // Add spells for higher levels
+        }
+
+        // Prompt the user to choose spells
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose " + playerClass + " spells from the following list:");
+        for (int i = 0; i < availableSpells.size(); i++) {
+            System.out.println((i + 1) + ". " + availableSpells.get(i));
+        }
+        System.out.print("Enter the numbers of the chosen spells (comma-separated): ");
+        String input = scanner.nextLine();
+        String[] spellNumbers = input.split(",");
+
+        // Add chosen spells to the character's spell list
+        for (String number : spellNumbers) {
+            int index = Integer.parseInt(number.trim()) - 1;
+            if (index >= 0 && index < availableSpells.size()) {
+                String chosenSpell = availableSpells.get(index);
+                spells.add(chosenSpell);
+            }
+        }
+
+        // Prompt the user to confirm chosen spells
+        System.out.println("Chosen spells: " + spells);
+    }
+
 
     /**
      * Modifies the character's HP.
      * @param hpChange The number added or subtracted from the character's HP.
      */
-    public void modifyHP(int hpChange){}
+    /**
+     * Modifies the character's HP.
+     * @param hpChange The number added or subtracted from the character's HP.
+     */
+    public void modifyHP(int hpChange) {
+        currentHP += hpChange;
+
+        // Ensure currentHP stays within the bounds of 0 and maxHP
+        currentHP = Math.max(0, currentHP);
+        currentHP = Math.min(currentHP, maxHP);
+
+        // Print the updated HP value
+        System.out.println("Current HP: " + currentHP + "/" + maxHP);
+    }
+
     /**
      * Applies the effects of a short rest to the character.
      */
-    public void shortRest(){}
+    public void shortRest() {
+        // Restore hit dice
+        int diceToRestore = Math.min(hitDiceNum - usedHitDice, level);
+        currentHP += diceToRestore * (int) (Math.random() * hitDie) + 1;
+        usedHitDice += diceToRestore;
+
+        // Restore spell slots or other expendable resources
+
+        // Print the results of the short rest
+        System.out.println("Short rest completed.");
+        System.out.println("Current HP: " + currentHP + "/" + maxHP);
+        System.out.println("Remaining Hit Dice: " + (hitDiceNum - usedHitDice) + "/" + hitDiceNum);
+    }
 
     /**
      * Applies the effects of a long rest to the character.
      */
-    public void longRest(){}
+    public void longRest() {
+        // Restore HP to maxHP
+        currentHP = maxHP;
+
+        // Restore hit dice and reset usedHitDice
+        usedHitDice = 0;
+
+        // Restore spell slots or other expendable resources
+
+        // Print the results of the long rest
+        System.out.println("Long rest completed.");
+        System.out.println("Current HP: " + currentHP + "/" + maxHP);
+        System.out.println("Remaining Hit Dice: " + (hitDiceNum - usedHitDice) + "/" + hitDiceNum);
+    }
 
     /**
      * Prints the character's information.
      * @return The character information.
      */
     @Override
-    public String toString(){
-        return null;
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Gender: ").append(gender).append("\n");
+        sb.append("Alignment: ").append(alignment).append("\n");
+        sb.append("Race: ").append(race).append("\n");
+        sb.append("Class: ").append(playerClass).append("\n");
+        sb.append("Background: ").append(background).append("\n");
+        sb.append("Stats: ").append(stats).append("\n");
+        sb.append("Stat Mods: ").append(statMods).append("\n");
+        sb.append("Max HP: ").append(maxHP).append("\n");
+        sb.append("Current HP: ").append(currentHP).append("\n");
+        sb.append("Hit Die: ").append(hitDie).append("\n");
+        sb.append("Hit Dice Num: ").append(hitDiceNum).append("\n");
+        sb.append("AC: ").append(ac).append("\n");
+        sb.append("Skills: ").append(skills).append("\n");
+        sb.append("Saving Throws: ").append(savingThrows).append("\n");
+        sb.append("Spells: ").append(spells).append("\n");
+        sb.append("Features: ").append(features).append("\n");
+        return sb.toString();
     }
+
 }
