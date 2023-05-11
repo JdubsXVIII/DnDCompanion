@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;;
+import java.util.Scanner;
 public class Character {
     private String name; // the character's name
     private String gender; // the character's gender
@@ -44,16 +44,29 @@ public class Character {
         int[] statArray = new int[6];
         Roll statRoller = new Roll(6);
         for(int i = 0; i < 6; i++){
-
+            statArray[i] = statRoller.nextRoll(3,0);
+        }
+        for(int i = 0; i < statArray.length; i++){
+            for(int j = i + 1; j < statArray.length; j++){
+                if(statArray[j] > statArray[i]){
+                    int temp = statArray[i];
+                    statArray[i] = statArray[j];
+                    statArray[j] = temp;
+                }
+            }
+        }
+        ArrayList<Integer> statNums = new ArrayList<>();
+        for(int i: statArray){
+            statNums.add(i);
         }
         for(int i = 0; i < 6; i++){
             statNums.add(statRoller.nextRoll(3, 0));
         }
 
         for(int i = 0; i < 6; i++){
-            stats.put(statList.get(0), statNums.get(0));
-            System.out.println(statList.get(0));
-            System.out.println(statNums.get(0));
+            stats.put(statList.get(i), statNums.get(i));
+            System.out.println(statList.get(i));
+            System.out.println(statNums.get(i));
         }
         for(String e: stats.keySet()){
             statMods.put(e, stats.get(e)/2 - 5);
