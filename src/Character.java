@@ -94,7 +94,7 @@ public class Character {
             features.put("Fey Ancestry", "You have advantage on saving throws against being charmed, and magic can't put you to sleep.");
             features.put("Trance", "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.");
         }
-        expFeatures.add(new Expendable("Spell Slots", 6,false,"Spellcasting classes have a limited number of spell slots that are expended when casting spells. These slots are typically replenished after a rest."));
+        expFeatures.add(new Expendable("Spell Slots", 6,false,"Spell casting classes have a limited number of spell slots that are expended when casting spells. These slots are typically replenished after a rest."));
         expFeatures.add(new Expendable("Hit Dice", 5,true,"During short rests, characters can spend Hit Dice to regain hit points. Hit Dice are expended until the character rests and regains them."));
         expFeatures.add(new Expendable("Channel Divinity",2,false,"Some classes, such as clerics and paladins, have access to Channel Divinity, granting them limited-use divine abilities that can be expended during encounters."));
         expFeatures.add(new Expendable("Bardic Inspiration",3,false, "Bards can expend uses of Bardic Inspiration to grant bonuses to allies' ability checks, attack rolls, or saving throws."));
