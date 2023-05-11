@@ -1,22 +1,23 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Scanner;;
 public class Character {
     private String name; // the character's name
     private String gender; // the character's gender
     private String alignment; // the character's alignment
     private HashMap<String, Integer> stats; // the characters stats
     private HashMap<String, Integer> statMods; // the character's stat modifiers
+    private int profBonus; // the character's proficiency bonus
     private String race; // the character's race
     private String playerClass; // the character's class
     private int maxHP; // the character's max HP
     private int currentHP; // the character's current HP
     private int hitDie; // the character's hit die value
     private int hitDiceNum; // the number of hit dice the character has
+    private int usedHitDice; // the number of hit dice the character has used so far
     private int ac; // the character's armor class
-    private String background; // the character's background
     private ArrayList<String> skills; // the character's skill proficiencies
-    private HashMap<String, Boolean> savingThrows; // the character's saving throw proficiencies
+    private ArrayList<String> savingThrows; // the character's saving throw proficiencies
     private ArrayList<String> spells; // the character's spells
     private HashMap<Object, String> features; // the character's features, as determined by their previous choices, and their descriptions.
     private ArrayList<Expendable> expFeatures; // the character's expendable features.
@@ -25,10 +26,11 @@ public class Character {
      * Creates a new Character object.
      */
     public Character() {
+        profBonus = 2;
         stats = new HashMap<>();
         statMods = new HashMap<>();
         skills = new ArrayList<>();
-        savingThrows = new HashMap<>();
+        savingThrows = new ArrayList<>();
         spells = new ArrayList<>();
         features = new HashMap<>();
         expFeatures = new ArrayList<>();
@@ -39,39 +41,22 @@ public class Character {
      * @param statList The order the player assigns values to their stats, from highest to lowest.
      */
     public void setStats(ArrayList<String> statList) {
-        int[] statValues = new int[6];
+        int[] statArray = new int[6];
+        Roll statRoller = new Roll(6);
+        for(int i = 0; i < 6; i++){
 
-        // Prompt the user to enter stat values
-        Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i < statList.size(); i++) {
-            String statName = statList.get(i);
-            System.out.print("Enter value for " + statName + ": ");
-            int value = scanner.nextInt();
-            statValues[i] = value;
+        }
+        for(int i = 0; i < 6; i++){
+            statNums.add(statRoller.nextRoll(3, 0));
         }
 
-        // Set the stats and calculate stat modifiers
-        stats.put("Strength", statValues[0]);
-        stats.put("Dexterity", statValues[1]);
-        stats.put("Constitution", statValues[2]);
-        stats.put("Intelligence", statValues[3]);
-        stats.put("Wisdom", statValues[4]);
-        stats.put("Charisma", statValues[5]);
-
-        calculateStatModifiers();
-
-        // Prompt the user to confirm stat values
-        System.out.println("Stats set to: " + stats);
-    }
-
-    /**
-     * Calculates the stat modifiers based on the current stat values.
-     */
-    private void calculateStatModifiers() {
-        for (String stat : stats.keySet()) {
-            int value = stats.get(stat);
-            int modifier = (value - 10) / 2;
-            statMods.put(stat, modifier);
+        for(int i = 0; i < 6; i++){
+            stats.put(statList.get(0), statNums.get(0));
+            System.out.println(statList.get(0));
+            System.out.println(statNums.get(0));
+        }
+        for(String e: stats.keySet()){
+            statMods.put(e, stats.get(e)/2 - 5);
         }
     }
 
@@ -94,17 +79,10 @@ public class Character {
             features.put("Fey Ancestry", "You have advantage on saving throws against being charmed, and magic can't put you to sleep.");
             features.put("Trance", "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.");
         }
-        expFeatures.add(new Expendable("Spell Slots", 6,false,"Spell casting classes have a limited number of spell slots that are expended when casting spells. These slots are typically replenished after a rest."));
-        expFeatures.add(new Expendable("Hit Dice", 5,true,"During short rests, characters can spend Hit Dice to regain hit points. Hit Dice are expended until the character rests and regains them."));
-        expFeatures.add(new Expendable("Channel Divinity",2,false,"Some classes, such as clerics and paladins, have access to Channel Divinity, granting them limited-use divine abilities that can be expended during encounters."));
-        expFeatures.add(new Expendable("Bardic Inspiration",3,false, "Bards can expend uses of Bardic Inspiration to grant bonuses to allies' ability checks, attack rolls, or saving throws."));
-        expFeatures.add(new Expendable("Superiority Dice",4,false,"Fighters with the Battle Master archetype possess Superiority Dice, which can be expended to perform combat maneuvers."));
-        expFeatures.add(new Expendable("Wild Shape",4,false,"Druids have the ability to transform into animals using Wild Shape, which is limited by a certain number of uses per rest"));
-        expFeatures.add(new Expendable("Rage",3,false,"Barbarians can enter a rage, granting them bonuses to damage and resistance to certain types of damage. Rage is limited by a number of uses per rest."));
-        expFeatures.add(new Expendable("Ki Points",13,false,"Monks can spend Ki Points to fuel various abilities, such as Stunning Strike or Flurry of Blows. Ki Points are limited but can be replenished after a rest."));
-        expFeatures.add(new Expendable("Arcane Recovery",4,true,"Wizards have the Arcane Recovery feature, allowing them to regain expended spell slots during a short rest once per day."));
+        //expFeatures.add("");
 
-
+        // Add additional race-specific features here
+        //if needed/ wanted
 
         // Prompt the user to confirm race choice
         System.out.println("Race set to: " + race);
@@ -116,19 +94,83 @@ public class Character {
     public void setClass(String c){
         Scanner console = new Scanner(System.in);
         if(c.equals("Barbarian")){
-
+            playerClass = c;
+            maxHP = 12 + statMods.get("Constitution");
+            hitDie = 12;
+            hitDiceNum = 1;
+            ac = 10 + statMods.get("Dexterity") + statMods.get("Constitution");
+            savingThrows.add("Strength");
+            savingThrows.add("Constitution");
+            features.put("Unarmored Defense", "When not wearing armor, add your Constitution modifier to your armor class.");
+            expFeatures.add(new Expendable("Rage", 2, false, "Rage lasts for one minute and grants:\n- Advantage on all Strength checks and saving throws\n- A +2 damage bonus on melee weapon attacks using Strength\n- Resistance to bludgeoning, piercing, and slashing damage\nRage lasts for 1 minute."));
         } else if(c.equals("Bard")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            ac = 11 + statMods.get("Dexterity");
+            savingThrows.add("Dexterity");
+            savingThrows.add("Charisma");
+            features.put("Cantrips", "0th-level spells.");
+            expFeatures.add(new Expendable("1st-level spellcasting", 2, false, "Spell slots for 1st-level spells."));
+            expFeatures.add(new Expendable("Bardic Inspiration", statMods.get("Charisma"), false, "Give any ally a d6 to add to any ability check, attack roll, or saving throw."));
         } else if(c.equals("Cleric")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            if(statMods.get("Dexterity") > 2){
+                ac = 16;
+            } else {
+                ac = 14 + statMods.get("Dexterity");
+            }
+            savingThrows.add("Wisdom");
+            savingThrows.add("Charisma");
+            features.put("Cantrips", "0th-level spells.");
+            expFeatures.add(new Expendable("1st-level spellcasting",2, false, "Spell slots for 1st-level spells"));
+            System.out.println("Which domain is your cleric?");
+            String subclass = console.next();
+            if(subclass.equals("Knowledge")){
+                features.put("Knowledge Domain","Your domain is knowledge.");
+                features.put("Blessings of Knowledge", "You gain proficiency in 2 additional languages.");
+            } else if(subclass.equals("Life")){
+                features.put("Life Domain","Your domain is life.");
+                features.put("Disciple of Life", "Whenever you use a spell 1st level or higher to restore another creature's HP, their HP restored is increased by 2 + the spell's level.");
+            } else if(subclass.equals("Light")){
+                features.put("Light Domain","Your domain is light.");
+                expFeatures.add(new Expendable("Warding Flare", statMods.get("Wisdom"), false, "You may use your reaction to impose disadvantage on a creature who is attacking you."));
+            } else if(subclass.equals("Nature")){
+                features.put("Nature Domain","Your domain is nature.");
+                features.put("Acolyte of Nature", "You gain a druid cantrip and proficiency in one of Animal Handling, Nature, or Survival.");
+            } else if(subclass.equals("Tempest")){
+                features.put("Tempest Domain","Your domain is tempest.");
+                expFeatures.add(new Expendable("Wrath of the Storm",statMods.get("Wisdom"), false, "When a creature within 5 feet of you hits you with an attack, you may make it roll a Dex saving throw for 2d8 damage, or half as much on a success."));
+            } else if(subclass.equals("Trickery")){
+                features.put("Trickery Domain","Your domain is trickery.");
+                features.put("Blessing of the Trickster", "You may touch a creature to give it advantage on Stealth checks for an hour.");
+            } else {
+                features.put("War Domain","Your domain is war.");
+                expFeatures.add(new Expendable("War Priest", statMods.get("Wisdom"), false, "You may make an attack as a bonus action whenever you make a weapon attack."));
+            }
         } else if(c.equals("Druid")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            ac = 13 + statMods.get("Dexterity");
+            savingThrows.add("Intelligence");
+            savingThrows.add("Wisdom");
+            features.put("Druidic", "You know the secret druidic language.");
+            features.put("Cantrips", "0th-level spell slots.");
+            expFeatures.add(new Expendable("1st-level spellcasting", 2, false, "Spell slots for 1st-level spells."));
         } else if(c.equals("Fighter")){
             playerClass = c;
             maxHP = 10 + statMods.get("Constitution");
             hitDie = 10;
             hitDiceNum = 1;
             ac = 16;
+            savingThrows.add("Strength");
+            savingThrows.add("Constitution");
             expFeatures.add(new Expendable("Second Wind", 1, true, "Restore 1d10 HP."));
             System.out.println("Please type in one of the following fighting styles:");
             System.out.println("- Archery\n- Defense\n- Dueling\n- Great Weapon Fighting\n- Protection\n- Two-Weapon Fighting");
@@ -148,44 +190,101 @@ public class Character {
                 features.put("Two-Weapon Fighting","When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.");
             }
         } else if(c.equals("Monk")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            ac = 10 + statMods.get("Wisdom") + statMods.get("Constitution");
+            savingThrows.add("Strength");
+            savingThrows.add("Dexterity");
+            features.put("Unarmored Defense", "When not wearing armor, add your Wisdom modifier to your armor class.");
+            features.put("Martial Arts", "When unarmed or only wielding monk weapons, you may:\n- Use Dex instead of Str when attacking with monk weapons or unarmed strikes\n- Use a d4 for your unarmed strikes\n- Make an unarmed strike as a bonus action whenever you attack");
         } else if(c.equals("Paladin")){
-
-        } else if(c.equals("Ranger")){
-
+            playerClass = c;
+            maxHP = 10 + statMods.get("Constitution");
+            hitDie = 10;
+            hitDiceNum = 1;
+            ac = 18;
+            savingThrows.add("Wisdom");
+            savingThrows.add("Charisma");
+            expFeatures.add(new Expendable("Divine Sense", 1+statMods.get("Charisma"), false, "You the location and type of any fiend, celestial, or undead within 60 ft. of you."));
+            features.put("Lay on Hands", "You have a pool of 5 HP to use in healing anyone you touch. You gain all the HP back after a long rest.");
+        } else if(c.equals("Ranger")){ //Ranger uses the reworked ranger rules, in order to be more competitive with the other classes.
+            playerClass = c;
+            maxHP = 10 + statMods.get("Constitution");
+            hitDie = 10;
+            hitDiceNum = 1;
+            savingThrows.add("Strength");
+            savingThrows.add("Dexterity");
+            if(statMods.get("Dexterity") > 2){
+                ac = 16;
+            } else {
+                ac = 14 + statMods.get("Dexterity");
+            }
+            expFeatures.add(new Expendable("Favored Foe", profBonus, false,"When you hit an enemy with a weapon attack, you may mark that enemy. The first time a turn you damage the marked enemy, including the turn you mark it, increase your damage by 1d4."));
+            features.put("Deft Explorer", "You may double one of your skill proficiencies. You also learn 2 additional languages.");
         } else if(c.equals("Rogue")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            ac = 11 + statMods.get("Dexterity");
+            savingThrows.add("Dexterity");
+            savingThrows.add("Intelligence");
+            features.put("Expertise", "Two skills of your choice may use double their proficiency bonus when making related checks.");
+            features.put("Sneak Attack", "Once per turn, you may deal an extra 1d6 damage to the enemy if you have advantage or if another enemy of the enemy is within 5 feet of it.");
         } else if(c.equals("Sorcerer")){
-
+            playerClass = c;
+            maxHP = 6 + statMods.get("Constitution");
+            hitDie = 6;
+            hitDiceNum = 1;
+            ac = 10 + statMods.get("Dexterity");
+            savingThrows.add("Constitution");
+            savingThrows.add("Charisma");
+            System.out.println("Please choose your sorcerous bloodline.");
+            String subclass = console.next();
+            if(subclass.equals("Draconic")){
+                features.put("Draconic Resilience", "Your HP increases by 1 per level in this class. Additionally, your unarmored AC is equal to 13 + Dex mod");
+                maxHP++;
+                ac = 13 + statMods.get("Dexterity");
+            } else {
+                features.put("Wild Magic Surge", "After casting a 1st-level or higher spell, roll a d20. On a 1, roll a d% on the Wild Magic table.");
+                expFeatures.add(new Expendable("Tides of Chaos", 1, false, "You may gain advantage on an attack roll, saving throw, or ability check."));
+            }
+            features.put("Cantrips", "0th-level spells.");
+            expFeatures.add(new Expendable("1st-level spellcasting", 2, false, "1st-level spell slots."));
         } else if(c.equals("Warlock")){
-
+            playerClass = c;
+            maxHP = 8 + statMods.get("Constitution");
+            hitDie = 8;
+            hitDiceNum = 1;
+            ac = 11 + statMods.get("Dexterity");
+            savingThrows.add("Wisdom");
+            savingThrows.add("Charisma");
+            features.put("Cantrips", "0th-level spellcasting");
+            expFeatures.add(new Expendable("Pact Magic", 1, true, "Spell slots"));
+            System.out.println("Enter your Otherworldly Patron.");
+            String subclass = console.next();
+            if(subclass.equals("Archfey")){
+                expFeatures.add(new Expendable("Fey Presence", 1,true,"You may cause other creatures within 10 ft. to make a Wisdom saving throw or be charmed/frightened by you."));
+            } else if(subclass.equals("Fiend")){
+                features.put("Dark One's Blessing", "Whenever you reduce a creature to 0 HP, gain temporary HP equal to your Cha mod + your warlock level.");
+            } else {
+                features.put("Awakened Mind", "You may speak telepathically to any creature within 30 ft. that can understand at least 1 language.");
+            }
         } else { // the only remaining class is Wizard.
-
+            playerClass = c;
+            maxHP = 6 + statMods.get("Constitution");
+            hitDie = 6;
+            hitDiceNum = 1;
+            ac = 10 + statMods.get("Dexterity");
+            savingThrows.add("Intelligence");
+            savingThrows.add("Wisdom");
+            features.put("Cantrips", "0th-level spells.");
+            expFeatures.add(new Expendable("1st-level spellcasting", 2,false,"Spell slots for 1st-level spells."));
         }
-    }
-
-    /**
-     * Sets the background of the character.
-     * @param bg The desired background.
-     */
-    public void setBackground(String bg) {
-        background = bg;
-
-        // Autofill features based on background
-        if (background.equals("Acolyte")) {
-            // Autofill features for Acolyte background
-            features.put("Shelter of the Faithful", "As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.");
-            features.put("Languages", "You can speak, read, and write two additional languages of your choice.");
-        } else if (background.equals("Criminal")) {
-            // Autofill features for Criminal background
-            features.put("Criminal Contact", "You have a reliable and trustworthy contact who acts as your liaison to a network of other criminals. You know how to get messages to and from your contact, even over great distances; specifically, you know the local messengers, corrupt caravan masters, and seedy sailors who can deliver messages for you.");
-            features.put("Tool Proficiencies", "One type of gaming set, thieves' tools");
-        }
-
-        // Add additional background-specific features here
-
-        // Prompt the user to confirm background choice
-        System.out.println("Background set to: " + background);
+        currentHP = maxHP;
+        usedHitDice = 0;
     }
 
     /**
@@ -217,15 +316,6 @@ public class Character {
             availableSkills.add("Perception");
             availableSkills.add("Religion");
             availableSkills.add("Survival");
-        }
-
-        // Add skills based on background
-        if (background.equals("Acolyte")) {
-            availableSkills.add("Insight");
-            availableSkills.add("Religion");
-        } else if (background.equals("Criminal")) {
-            availableSkills.add("Deception");
-            availableSkills.add("Stealth");
         }
 
         // Prompt the user to choose skills
@@ -354,11 +444,16 @@ public class Character {
      */
     public void shortRest() {
         // Restore hit dice
-        int diceToRestore = Math.min(hitDiceNum - usedHitDice);
-        currentHP += diceToRestore * (int) (Math.random() * hitDie) + 1;
-        usedHitDice += diceToRestore;
+        Roll hitDieRoller = new Roll(hitDie);
+        modifyHP(hitDieRoller.nextRoll(1,statMods.get("Constitution")));
+        usedHitDice++;
 
         // Restore spell slots or other expendable resources
+        for(Expendable e : expFeatures){
+            if(e.getRefresh()){
+                e.setUsesLeft(e.getMaxUses());
+            }
+        }
 
         // Print the results of the short rest
         System.out.println("Short rest completed.");
@@ -376,11 +471,12 @@ public class Character {
         usedHitDice = 0;
 
         // Restore spell slots or other expendable resources
+        for(Expendable e : expFeatures){
+            e.setUsesLeft(e.getMaxUses());
+        }
 
         // Print the results of the long rest
         System.out.println("Long rest completed.");
-        System.out.println("Current HP: " + currentHP + "/" + maxHP);
-        System.out.println("Remaining Hit Dice: " + (hitDiceNum - usedHitDice) + "/" + hitDiceNum);
     }
 
     /**
@@ -395,7 +491,6 @@ public class Character {
         sb.append("Alignment: ").append(alignment).append("\n");
         sb.append("Race: ").append(race).append("\n");
         sb.append("Class: ").append(playerClass).append("\n");
-        sb.append("Background: ").append(background).append("\n");
         sb.append("Stats: ").append(stats).append("\n");
         sb.append("Stat Mods: ").append(statMods).append("\n");
         sb.append("Max HP: ").append(maxHP).append("\n");

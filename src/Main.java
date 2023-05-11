@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
     /**
@@ -35,11 +34,9 @@ public class Main {
         c.setRace(console.next());
         System.out.println("Now, select you character's class: ");
         c.setClass(console.next());
-        System.out.println("Now, select your character's background: ");
-        c.setBackground(console.next());
-        System.out.println("Now, select your character's skills: ");
-        c.setSkills();
-        System.out.println("We're almost done! Now pick your character's alignment, gender, and name.");
+        //System.out.println("Now, select your character's skills: ");
+        //c.setSkills();
+        //System.out.println("We're almost done! Now pick your character's alignment, gender, and name.");
         //c.setMisc(console.next(), console.next(), console.next());
         String input = "";
         while(!input.equals("end")){
