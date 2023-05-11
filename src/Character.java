@@ -94,7 +94,16 @@ public class Character {
             features.put("Fey Ancestry", "You have advantage on saving throws against being charmed, and magic can't put you to sleep.");
             features.put("Trance", "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.");
         }
-        expFeatures.add("");
+        expFeatures.add(new Expendable("Spell Slots", 6,false,"Spellcasting classes have a limited number of spell slots that are expended when casting spells. These slots are typically replenished after a rest."));
+        expFeatures.add(new Expendable("Hit Dice", 5,true,"During short rests, characters can spend Hit Dice to regain hit points. Hit Dice are expended until the character rests and regains them."));
+        expFeatures.add(new Expendable("Channel Divinity",2,false,"Some classes, such as clerics and paladins, have access to Channel Divinity, granting them limited-use divine abilities that can be expended during encounters."));
+        expFeatures.add(new Expendable("Bardic Inspiration",3,false, "Bards can expend uses of Bardic Inspiration to grant bonuses to allies' ability checks, attack rolls, or saving throws."));
+        expFeatures.add(new Expendable("Superiority Dice",4,false,"Fighters with the Battle Master archetype possess Superiority Dice, which can be expended to perform combat maneuvers."));
+        expFeatures.add(new Expendable("Wild Shape",4,false,"Druids have the ability to transform into animals using Wild Shape, which is limited by a certain number of uses per rest"));
+        expFeatures.add(new Expendable("Rage",3,false,"Barbarians can enter a rage, granting them bonuses to damage and resistance to certain types of damage. Rage is limited by a number of uses per rest."));
+        expFeatures.add(new Expendable("Ki Points",13,false,"Monks can spend Ki Points to fuel various abilities, such as Stunning Strike or Flurry of Blows. Ki Points are limited but can be replenished after a rest."));
+        expFeatures.add(new Expendable("Arcane Recovery",4,true,"Wizards have the Arcane Recovery feature, allowing them to regain expended spell slots during a short rest once per day."));
+
 
         // Add additional race-specific features here
         //if needed/ wanted
