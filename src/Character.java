@@ -308,7 +308,56 @@ public class Character {
         ArrayList<String> availableSkills = new ArrayList<>();
 
         // Add skills based on class
-        if (playerClass.equals("Rogue")) {
+        if(playerClass.equals("Barbarian")){
+            availableSkills.add("Animal Handling");
+            availableSkills.add("Athletics");
+            availableSkills.add("Intimidation");
+            availableSkills.add("Nature");
+            availableSkills.add("Perception");
+            availableSkills.add("Survival");
+        } else if (playerClass.equals("Bard")){
+            availableSkills.add("Athletics");
+            availableSkills.add("Acrobatics");
+            availableSkills.add("Sleight of Hand");
+            availableSkills.add("Stealth");
+            availableSkills.add("Arcana");
+            availableSkills.add("History");
+            availableSkills.add("Investigation");
+            availableSkills.add("Nature");
+            availableSkills.add("Religion");
+            availableSkills.add("Animal Handling");
+            availableSkills.add("Insight");
+            availableSkills.add("Medicine");
+            availableSkills.add("Perception");
+            availableSkills.add("Survival");
+            availableSkills.add("Deception");
+            availableSkills.add("Intimidation");
+            availableSkills.add("Performance");
+            availableSkills.add("Persuasion");
+        } else if (playerClass.equals("Cleric")){
+            availableSkills.add("History");
+            availableSkills.add("Insight");
+            availableSkills.add("Medicine");
+            availableSkills.add("Persuasion");
+            availableSkills.add("Religion");
+        } else if (playerClass.equals("Druid")){
+            availableSkills.add("Animal Handling");
+            availableSkills.add("Arcana");
+            availableSkills.add("Insight");
+            availableSkills.add("Medicine");
+            availableSkills.add("Nature");
+            availableSkills.add("Perception");
+            availableSkills.add("Religion");
+            availableSkills.add("Survival");
+        } else if (playerClass.equals("Fighter")){
+
+        } else if (playerClass.equals("Monk")){
+
+        } else if (playerClass.equals("Paladin")){
+
+        } else if (playerClass.equals("Ranger")){
+
+        } else if (playerClass.equals("Rogue")) {
             availableSkills.add("Acrobatics");
             availableSkills.add("Athletics");
             availableSkills.add("Deception");
@@ -320,7 +369,11 @@ public class Character {
             availableSkills.add("Persuasion");
             availableSkills.add("Sleight of Hand");
             availableSkills.add("Stealth");
-        } else if (playerClass.equals("Wizard")) {
+        } else if (playerClass.equals("Sorcerer")){
+
+        } else if (playerClass.equals("Warlock")){
+
+        }else if (playerClass.equals("Wizard")) {
             availableSkills.add("Arcana");
             availableSkills.add("History");
             availableSkills.add("Insight");
