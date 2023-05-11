@@ -105,8 +105,6 @@ public class Character {
         expFeatures.add(new Expendable("Arcane Recovery",4,true,"Wizards have the Arcane Recovery feature, allowing them to regain expended spell slots during a short rest once per day."));
 
 
-        // Add additional race-specific features here
-        //if needed/ wanted
 
         // Prompt the user to confirm race choice
         System.out.println("Race set to: " + race);
